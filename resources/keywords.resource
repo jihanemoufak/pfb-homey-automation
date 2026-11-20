@@ -18,3 +18,16 @@ Verifier Liste Annonces Non Vide
     ${nombre}=    Get Element Count    ${LISTE_ANNONCES}
     Should Be True    ${nombre} > 0
     Log    Nombre d'annonces affichées : ${nombre}
+
+Verifier Compteur Resultats
+    Wait Until Page Contains Element    ${COMPTEUR_RESULTATS}    timeout=10s
+    Wait Until Element Contains    ${COMPTEUR_RESULTATS}    Location    timeout=10s
+    ${texte}=    Get Text    ${COMPTEUR_RESULTATS}
+    Log    Texte lu : ${texte}
+    ${nombre}=    Evaluate    int(re.search(r'[0-9]+', $texte).group())    modules=re
+    Should Be True    ${nombre} > 0
+    Log    Compteur affiché : ${nombre}
+
+Verifier Pagination Presente
+    Wait Until Page Contains Element    ${PAGINATION}    timeout=10s
+    Page Should Contain Element    ${LIEN_PAGE_2}

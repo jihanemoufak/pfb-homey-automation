@@ -7,9 +7,13 @@ Test Teardown     Close All Browsers
 *** Test Cases ***
 US01-S1 Recherche Sans Critere
     [Documentation]    ÉTANT DONNÉ un utilisateur sur la page d'accueil, QUAND il clique sur Chercher
-    ...                sans renseigner de critère, ALORS la page de résultats s'affiche
-    ...                et la liste contient les annonces publiées.
+    ...                sans renseigner de critère, ALORS la page de résultats s'affiche,
+    ...                le compteur indique au moins un résultat et la liste est paginée.
+    ...                Limite : l'oracle ne vérifie pas que TOUTES les annonces publiées sont
+    ...                retournées (le total évolue avec la création d'annonces, cf. autre US).
     [Tags]    US-01    scenario-1    recherche
     Cliquer Sur Chercher
     Verifier Page Resultats Affichee
+    Verifier Compteur Resultats
     Verifier Liste Annonces Non Vide
+    Verifier Pagination Presente
