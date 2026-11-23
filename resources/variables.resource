@@ -10,3 +10,9 @@ ${LIEN_PAGE_2}            css:ul.pagination a[data-homeypagi='2']
 ${LISTE_DESTINATION}      css:.banner-caption .filter-option
 ${VILLE_RECHERCHEE}       Bordeaux
 ${ADRESSES_ANNONCES}      css:#homey_halfmap_listings_container .item-address
+${CHAMP_DEBUT}            name:arrive
+${CHAMP_FIN}              name:depart
+${CHAMP_VOYAGEURS}        name:guest
+${BTN_ADULTE_PLUS}        css:.banner-caption .search_adult_plus > .fa
+${BTN_APPLIQUER}          css:.banner-caption .guest-apply-btn > .btn
+${NB_ADULTES}             2

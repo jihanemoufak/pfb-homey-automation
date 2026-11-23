@@ -1,5 +1,6 @@
 *** Settings ***
 Library     SeleniumLibrary
+Library     DateTime
 Resource    variables.resource
 
 *** Keywords ***
@@ -54,3 +55,26 @@ Verifier Adresses Contiennent
         ${texte}=    Get Element Attribute    ${adresse}    textContent
         Should Contain    ${texte}    ${ville}    ignore_case=True
     END
+
+Calculer Date
+    [Arguments]    ${jours}
+    ${date}=    Get Current Date    increment=${jours} days    result_format=%Y-%m-%d
+    RETURN    ${date}
+
+Renseigner Dates
+    [Arguments]    ${debut}    ${fin}
+    Input Text    ${CHAMP_DEBUT}    ${debut}
+    Input Text    ${CHAMP_FIN}    ${fin}
+
+Renseigner Voyageurs Adultes
+    [Arguments]    ${nombre}
+    Click Element    ${CHAMP_VOYAGEURS}
+    FOR    ${i}    IN RANGE    ${nombre}
+        Click Element    ${BTN_ADULTE_PLUS}
+    END
+    Click Element    ${BTN_APPLIQUER}
+
+Verifier Valeur Champ
+    [Arguments]    ${localisateur}    ${attendu}
+    ${valeur}=    Get Value    ${localisateur}
+    Should Be Equal    ${valeur}    ${attendu}
