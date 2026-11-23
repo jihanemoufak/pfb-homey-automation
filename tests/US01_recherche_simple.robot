@@ -79,3 +79,17 @@ US01-S4 Recherche Sans Resultat
     Verifier Url Contient Critere    arrive=${debut}
     Verifier Compteur Zero
     Verifier Aucun Resultat
+
+US01-S5a Critere Non Valide Date Debut Anterieure
+    [Documentation]    ÉTANT DONNÉ un utilisateur sur la page d'accueil, QUAND il saisit une
+    ...                date de début antérieure à aujourd'hui (la veille), ALORS la page de
+    ...                résultats ne s'affiche pas et un message indique que le critère n'est
+    ...                pas valide.
+    ...                Défaut connu : l'application ouvre la page de résultats sans message.
+    [Tags]    US-01    scenario-5    recherche    defaut-connu
+    ${debut}=    Calculer Date    -1
+    ${fin}=    Calculer Date    5
+    Renseigner Dates    ${debut}    ${fin}
+    Cliquer Sur Chercher
+    Verifier Page Resultats Non Affichee
+    Verifier Message Critere Invalide
