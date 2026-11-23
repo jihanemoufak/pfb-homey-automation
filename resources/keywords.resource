@@ -78,3 +78,14 @@ Verifier Valeur Champ
     [Arguments]    ${localisateur}    ${attendu}
     ${valeur}=    Get Value    ${localisateur}
     Should Be Equal    ${valeur}    ${attendu}
+
+Verifier Aucun Resultat
+    Wait Until Page Contains Element    ${MESSAGE_AUCUN_RESULTAT}    timeout=10s
+    Element Should Contain    ${MESSAGE_AUCUN_RESULTAT}    aucun résultat
+    Page Should Not Contain Element    ${LISTE_ANNONCES}
+
+Verifier Compteur Zero
+    Wait Until Element Contains    ${COMPTEUR_RESULTATS}    0    timeout=10s
+    ${texte}=    Get Text    ${COMPTEUR_RESULTATS}
+    ${nombre}=    Evaluate    int(re.search(r'[0-9]+', $texte).group())    modules=re
+    Should Be Equal As Integers    ${nombre}    0

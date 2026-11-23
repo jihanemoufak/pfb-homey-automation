@@ -58,3 +58,24 @@ US01-S3 Recherche Avec Plusieurs Criteres
     Verifier Valeur Champ    ${CHAMP_FIN}    ${fin}
     Verifier Valeur Champ    ${CHAMP_VOYAGEURS}    ${NB_ADULTES}
     Verifier Adresses Contiennent    ${VILLE_RECHERCHEE}
+
+
+US01-S4 Recherche Sans Resultat
+    [Documentation]    ÉTANT DONNÉ un utilisateur sur la page d'accueil, QUAND il renseigne
+    ...                des critères valides auxquels aucune annonce ne répond, ALORS la page
+    ...                de résultats s'affiche et la liste est vide avec un message
+    ...                « Nous n'avons trouvé aucun résultat ».
+    ...                Limite : le jeu de données (Amsterdam, +420 jours) suppose qu'aucune
+    ...                annonce n'y soit créée par une autre US.
+    [Tags]    US-01    scenario-4    recherche
+    ${debut}=    Calculer Date    420
+    ${fin}=    Calculer Date    426
+    Renseigner Destination    ${VILLE_SANS_RESULTAT}
+    Renseigner Dates    ${debut}    ${fin}
+    Renseigner Voyageurs Adultes    ${NB_ADULTES}
+    Cliquer Sur Chercher
+    Verifier Page Resultats Affichee
+    Verifier Url Contient Critere    city=${VILLE_SANS_RESULTAT}
+    Verifier Url Contient Critere    arrive=${debut}
+    Verifier Compteur Zero
+    Verifier Aucun Resultat

@@ -16,3 +16,5 @@ ${CHAMP_VOYAGEURS}        name:guest
 ${BTN_ADULTE_PLUS}        css:.banner-caption .search_adult_plus > .fa
 ${BTN_APPLIQUER}          css:.banner-caption .guest-apply-btn > .btn
 ${NB_ADULTES}             2
+${VILLE_SANS_RESULTAT}    Amsterdam
+${MESSAGE_AUCUN_RESULTAT}    css:#homey_halfmap_listings_container .map-notfound
