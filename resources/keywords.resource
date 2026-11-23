@@ -31,3 +31,26 @@ Verifier Compteur Resultats
 Verifier Pagination Presente
     Wait Until Page Contains Element    ${PAGINATION}    timeout=10s
     Page Should Contain Element    ${LIEN_PAGE_2}
+
+Renseigner Destination
+    [Arguments]      ${ville}
+    Click Element    ${LISTE_DESTINATION}
+    Click Element    link:${ville}
+
+Verifier Url Contient Critere
+    [Arguments]    ${valeur}
+    ${url}=    Get Location
+    Should Contain    ${url}    ${valeur}    ignore_case=True
+
+Verifier Destination Rappelee
+    [Arguments]    ${ville}
+    Page Should Contain Element    xpath://*[contains(@class,'filter-option') and contains(.,'${ville}')]
+
+Verifier Adresses Contiennent
+    [Arguments]    ${ville}
+    ${adresses}=    Get WebElements    ${ADRESSES_ANNONCES}
+    Should Not Be Empty    ${adresses}
+    FOR    ${adresse}    IN    @{adresses}
+        ${texte}=    Get Element Attribute    ${adresse}    textContent
+        Should Contain    ${texte}    ${ville}    ignore_case=True
+    END

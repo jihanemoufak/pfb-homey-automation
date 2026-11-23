@@ -17,3 +17,18 @@ US01-S1 Recherche Sans Critere
     Verifier Compteur Resultats
     Verifier Liste Annonces Non Vide
     Verifier Pagination Presente
+
+US01-S2 Recherche Avec Un Seul Critere
+    [Documentation]    ÉTANT DONNÉ un utilisateur sur la page d'accueil, QUAND il renseigne
+    ...                uniquement la destination, ALORS la page de résultats s'affiche
+    ...                et la liste contient des annonces.
+    ...                Oracle : URL, rappel de la destination et adresse de chaque annonce de la page 1 contiennent la ville.
+    [Tags]    US-01    scenario-2    recherche
+    Renseigner Destination    ${VILLE_RECHERCHEE}
+    Cliquer Sur Chercher
+    Verifier Page Resultats Affichee
+    Verifier Compteur Resultats
+    Verifier Liste Annonces Non Vide
+    Verifier Url Contient Critere    city=${VILLE_RECHERCHEE}
+    Verifier Destination Rappelee    ${VILLE_RECHERCHEE}
+    Verifier Adresses Contiennent    ${VILLE_RECHERCHEE}
