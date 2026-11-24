@@ -115,3 +115,9 @@ Verifier Page Resultats Non Affichee
 # Un message indique que le critère n'est pas valide
 Verifier Message Critere Invalide
     Page Should Contain Element    xpath://*[contains(normalize-space(text()),'valide')]
+
+# Ouvre la liste Destination et saisit un texte libre dans son champ de recherche
+Saisir Destination Libre
+    [Arguments]    ${texte}
+    Click Element    ${LISTE_DESTINATION}
+    Input Text    ${CHAMP_RECHERCHE_DESTINATION}    ${texte}

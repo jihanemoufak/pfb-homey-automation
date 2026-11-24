@@ -93,3 +93,15 @@ US01-S5a Critere Non Valide Date Debut Anterieure
     Cliquer Sur Chercher
     Verifier Page Resultats Non Affichee
     Verifier Message Critere Invalide
+
+US01-S5b Critere Non Valide Destination Trop Longue
+    [Documentation]    ÉTANT DONNÉ un utilisateur sur la page d'accueil, QUAND il saisit une
+    ...                destination de plus de 20 caractères, ALORS la page de résultats ne
+    ...                s'affiche pas et un message indique que le critère n'est pas valide.
+    ...                Défaut connu : la recherche est lancée avec city vide et renvoie
+    ...                toutes les annonces, sans message d'erreur.
+    [Tags]    US-01    scenario-5    recherche    defaut-connu
+    Saisir Destination Libre    ${DESTINATION_TROP_LONGUE}
+    Cliquer Sur Chercher
+    Verifier Page Resultats Non Affichee
+    Verifier Message Critere Invalide

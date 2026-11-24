@@ -51,3 +51,6 @@ ${MESSAGE_AUCUN_RESULTAT}    css:#homey_halfmap_listings_container .map-notfound
 # (aucune variable spécifique pour l'instant, S5b ajoutera le champ de saisie
 #  de la destination)
 # =============================================================================
+
+${CHAMP_RECHERCHE_DESTINATION}    css:.search-destination .bs-searchbox input
+${DESTINATION_TROP_LONGUE}        ggggggggggggggggggggggggg
