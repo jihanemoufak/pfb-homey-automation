@@ -24,7 +24,7 @@ pipeline {
     post {
         always {
             robot outputPath: 'results'
-            archiveArtifacts artifacts: 'results/**', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'results/*.html, results/output.xml', allowEmptyArchive: true
         }
     }
 }
