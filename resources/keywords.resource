@@ -5,8 +5,9 @@ Resource    variables.resource
 
 *** Keywords ***
 # Précondition : ouvre Homey dans le navigateur cible (S1 à S5)
+# Une nouvelle tentative est faite si le navigateur ne démarre pas (instabilité du pilote)
 Ouvrir Homey
-    Open Browser    ${URL}    ${BROWSER}
+    Wait Until Keyword Succeeds    2x    3s    Open Browser    ${URL}    ${BROWSER}
     Set Window Size    1920    1032
 
 # Lance la recherche avec les critères renseignés (S1 à S5)

@@ -105,3 +105,18 @@ US01-S5b Critere Non Valide Destination Trop Longue
     Cliquer Sur Chercher
     Verifier Page Resultats Non Affichee
     Verifier Message Critere Invalide
+
+US01-S5c Critere Non Valide Date Fin Anterieure Au Debut
+    [Documentation]    ÉTANT DONNÉ un utilisateur sur la page d'accueil, QUAND il saisit une
+    ...                date de fin antérieure à la date de début (les deux dates étant
+    ...                postérieures à aujourd'hui), ALORS la page de résultats ne s'affiche
+    ...                pas et un message indique que le critère n'est pas valide.
+    ...                Résultat observé à confirmer : à l'exécution manuelle, vérifier si
+    ...                l'application refuse la saisie ou lance la recherche.
+    [Tags]    US-01    scenario-5    recherche    defaut-connu
+    ${debut}=    Calculer Date    10
+    ${fin}=    Calculer Date    5
+    Renseigner Dates    ${debut}    ${fin}
+    Cliquer Sur Chercher
+    Verifier Page Resultats Non Affichee
+    Verifier Message Critere Invalide

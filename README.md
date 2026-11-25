@@ -7,7 +7,7 @@ Automatisation des tests de l'application Homey avec Robot Framework
 
 | User Story | Fichier de test | État |
 |---|---|---|
-| US-01 : Réaliser une recherche simple | `tests/US01_recherche_simple.robot` | Scénarios 1 à 4 et 5a automatisés |
+| US-01 : Réaliser une recherche simple | `tests/US01_recherche_simple.robot` | Scénarios 1 à 4, 5a, 5b et 5c automatisés |
 
 ## Prérequis
 
@@ -78,6 +78,8 @@ Exécution en tenant compte des défauts connus :
 python -m robot -d results --skiponfailure defaut-connu tests
 ```
 
+| US01-S5c | La date de fin ne peut pas être antérieure à la date de début : pas de page de résultats, message « critère non valide » | La page de résultats s'ouvre sans message d'erreur et affiche les 223 annonces (début `2026-12-03`, fin `2026-11-27`) |
+
 ## Limites connues des oracles
 
 - US01-S1 : l'oracle ne vérifie pas que toutes les annonces publiées sont
@@ -85,4 +87,4 @@ python -m robot -d results --skiponfailure defaut-connu tests
   compteur, la liste et la pagination.
 - US01-S4 : le jeu de données (Amsterdam, dates à +420 jours) suppose
   qu'aucune annonce n'y soit créée par une autre US.
-- Les dates sont calculées dynamiquement (aujourd'hui + N jours).
+- Les dates sont calculées dynamiquement (aujourd'hui + N jours).![alt text](image.png)![![alt text](image-2.png)](image-1.png)
