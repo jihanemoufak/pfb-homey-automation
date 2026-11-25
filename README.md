@@ -63,22 +63,21 @@ pfb-homey-automation/
 
 ## Défauts connus
 
-Certains cas de test échouent parce que l'application ne respecte pas la
-spécification. Ils portent le tag `defaut-connu` et sont marqués SKIP dans le
-pipeline (option `--skiponfailure defaut-connu`), afin de ne pas masquer les
-régressions des autres tests. Le défaut reste visible dans le rapport.
+L'application ne respecte pas la spécification sur plusieurs critères non valides
+(US-01, scénario 5). Les cas de test correspondants suivent la spécification : ils
+échouent tant que le défaut n'est pas corrigé. Ils portent le tag `defaut-connu`.
 
 | Cas de test | Spécification (US-01, scénario 5) | Comportement observé |
 |---|---|---|
 | US01-S5a | Une date de début antérieure à aujourd'hui est refusée : pas de page de résultats, message « critère non valide » | La page de résultats s'ouvre sans message d'erreur (208 annonces avec `2026-10-10`, 0 avec `2026-11-15`) |
-
-Exécution en tenant compte des défauts connus :
-
-```
-python -m robot -d results --skiponfailure defaut-connu tests
-```
-
+| US01-S5b | Une destination de plus de 20 caractères est refusée : pas de page de résultats, message « critère non valide » | La recherche part avec `city` vide et la page de résultats affiche les 223 annonces, sans message |
 | US01-S5c | La date de fin ne peut pas être antérieure à la date de début : pas de page de résultats, message « critère non valide » | La page de résultats s'ouvre sans message d'erreur et affiche les 223 annonces (début `2026-12-03`, fin `2026-11-27`) |
+
+Exécution complète (les défauts apparaissent en échec) :
+
+```
+python -m robot -d results tests
+```
 
 ## Limites connues des oracles
 

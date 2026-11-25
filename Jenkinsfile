@@ -16,7 +16,7 @@ pipeline {
 
         stage('Exécution des tests') {
             steps {
-                bat 'python -m robot -d results --skiponfailure defaut-connu tests'
+                bat 'python -m robot -d results tests'
             }
         }
     }
