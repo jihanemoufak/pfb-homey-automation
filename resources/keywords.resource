@@ -4,26 +4,72 @@ Library     DateTime
 Resource    variables.resource
 
 *** Keywords ***
-# Précondition : ouvre Homey dans le navigateur cible (S1 à S5)
+# =============================================================================
+# MOTS-CLÉS COMMUNS : ACTIONS (utilisés par plusieurs US)
+# =============================================================================
+
+# Précondition : ouvre Homey dans le navigateur cible (US-01, US-02)
 # Une nouvelle tentative est faite si le navigateur ne démarre pas (instabilité du pilote)
 Ouvrir Homey
     Wait Until Keyword Succeeds    2x    3s    Open Browser    ${URL}    ${BROWSER}
     Set Window Size    1920    1032
 
-# Lance la recherche avec les critères renseignés (S1 à S5)
+# Lance la recherche avec les critères renseignés
 Cliquer Sur Chercher
     Click Element    ${BTN_CHERCHER}
+
+# Ouvre la liste déroulante et choisit une commune
+Renseigner Destination
+    [Arguments]      ${ville}
+    Click Element    ${LISTE_DESTINATION}
+    Click Element    link:${ville}
+
+# Retourne la date du jour + N jours au format AAAA-MM-JJ
+Calculer Date
+    [Arguments]    ${jours}
+    ${date}=    Get Current Date    increment=${jours} days    result_format=%Y-%m-%d
+    RETURN    ${date}
+
+# Saisit les dates de début et de fin au clavier
+Renseigner Dates
+    [Arguments]    ${debut}    ${fin}
+    Input Text    ${CHAMP_DEBUT}    ${debut}
+    Input Text    ${CHAMP_FIN}    ${fin}
+
+# Ajoute N adultes dans le menu Voyageurs puis clique sur Appliquer
+Renseigner Voyageurs Adultes
+    [Arguments]    ${nombre}
+    Click Element    ${CHAMP_VOYAGEURS}
+    FOR    ${i}    IN RANGE    ${nombre}
+        Click Element    ${BTN_ADULTE_PLUS}
+    END
+    Click Element    ${BTN_APPLIQUER}
+
+# =============================================================================
+# MOTS-CLÉS COMMUNS : VÉRIFICATIONS (utilisées par plusieurs US)
+# =============================================================================
+
+# L'URL contient le paramètre attendu, ex. city=bordeaux
+Verifier Url Contient Critere
+    [Arguments]    ${valeur}
+    ${url}=    Get Location
+    Should Contain    ${url}    ${valeur}    ignore_case=True
+
+# Compare la valeur affichée dans un champ à la valeur attendue (rappel des critères)
+Verifier Valeur Champ
+    [Arguments]    ${localisateur}    ${attendu}
+    ${valeur}=    Get Value    ${localisateur}
+    Should Be Equal    ${valeur}    ${attendu}
+
+# =============================================================================
+# US-01 : Réaliser une recherche simple
+# =============================================================================
+
+# ----- Éléments communs aux scénarios de US-01 -----
 
 # La page de résultats est affichée : conteneur présent (S1 à S4)
 Verifier Page Resultats Affichee
     Wait Until Page Contains Element    ${CONTENEUR_RESULTATS}    timeout=10s
-
-# Au moins une annonce est affichée sur la page courante (S1, S2)
-Verifier Liste Annonces Non Vide
-    Wait Until Page Contains Element    ${LISTE_ANNONCES}    timeout=10s
-    ${nombre}=    Get Element Count    ${LISTE_ANNONCES}
-    Should Be True    ${nombre} > 0
-    Log    Nombre d'annonces affichées : ${nombre}
 
 # Le compteur « N Location » indique au moins un résultat (S1, S2, S3)
 Verifier Compteur Resultats
@@ -35,29 +81,28 @@ Verifier Compteur Resultats
     Should Be True    ${nombre} > 0
     Log    Compteur affiché : ${nombre}
 
+# Au moins une annonce est affichée sur la page courante (S1, S2)
+Verifier Liste Annonces Non Vide
+    Wait Until Page Contains Element    ${LISTE_ANNONCES}    timeout=10s
+    ${nombre}=    Get Element Count    ${LISTE_ANNONCES}
+    Should Be True    ${nombre} > 0
+    Log    Nombre d'annonces affichées : ${nombre}
+
+# ----- Scénario 1 : Recherche sans critère -----
+
 # La liste est paginée : la pagination et le lien vers la page 2 sont présents
 Verifier Pagination Presente
     Wait Until Page Contains Element    ${PAGINATION}    timeout=10s
     Page Should Contain Element    ${LIEN_PAGE_2}
 
-# Ouvre la liste déroulante et choisit une commune (S2, S3, S4)
-Renseigner Destination
-    [Arguments]      ${ville}
-    Click Element    ${LISTE_DESTINATION}
-    Click Element    link:${ville}
+# ----- Scénario 2 : Recherche avec un seul critère (aussi utilisés en S3) -----
 
-# L'URL de résultats contient le paramètre attendu, ex. city=bordeaux (S2, S3, S4)
-Verifier Url Contient Critere
-    [Arguments]    ${valeur}
-    ${url}=    Get Location
-    Should Contain    ${url}    ${valeur}    ignore_case=True
-
-# Le rappel des critères affiche la ville dans la barre de recherche (aussi utilisé en S3)
+# Le rappel des critères affiche la ville dans la barre de recherche
 Verifier Destination Rappelee
     [Arguments]    ${ville}
     Page Should Contain Element    xpath://*[contains(@class,'filter-option') and contains(.,'${ville}')]
 
-# Chaque annonce de la page contient la ville dans son adresse (aussi utilisé en S3)
+# Chaque annonce de la page contient la ville dans son adresse
 Verifier Adresses Contiennent
     [Arguments]    ${ville}
     ${adresses}=    Get WebElements    ${ADRESSES_ANNONCES}
@@ -67,32 +112,7 @@ Verifier Adresses Contiennent
         Should Contain    ${texte}    ${ville}    ignore_case=True
     END
 
-# Retourne la date du jour + N jours au format AAAA-MM-JJ (S3, S4, S5)
-Calculer Date
-    [Arguments]    ${jours}
-    ${date}=    Get Current Date    increment=${jours} days    result_format=%Y-%m-%d
-    RETURN    ${date}
-
-# Saisit les dates de début et de fin au clavier (S3, S4, S5)
-Renseigner Dates
-    [Arguments]    ${debut}    ${fin}
-    Input Text    ${CHAMP_DEBUT}    ${debut}
-    Input Text    ${CHAMP_FIN}    ${fin}
-
-# Ajoute N adultes dans le menu Voyageurs puis clique sur Appliquer (S3, S4)
-Renseigner Voyageurs Adultes
-    [Arguments]    ${nombre}
-    Click Element    ${CHAMP_VOYAGEURS}
-    FOR    ${i}    IN RANGE    ${nombre}
-        Click Element    ${BTN_ADULTE_PLUS}
-    END
-    Click Element    ${BTN_APPLIQUER}
-
-# Compare la valeur affichée dans un champ à la valeur attendue (rappel des critères)
-Verifier Valeur Champ
-    [Arguments]    ${localisateur}    ${attendu}
-    ${valeur}=    Get Value    ${localisateur}
-    Should Be Equal    ${valeur}    ${attendu}
+# ----- Scénario 4 : Aucun résultat trouvé -----
 
 # Le message « aucun résultat » est affiché et aucune annonce n'est présente
 Verifier Aucun Resultat
@@ -100,12 +120,14 @@ Verifier Aucun Resultat
     Element Should Contain    ${MESSAGE_AUCUN_RESULTAT}    aucun résultat
     Page Should Not Contain Element    ${LISTE_ANNONCES}
 
-# Le compteur vaut 0 (libellé « De location » ignoré, seul le nombre compte
+# Le compteur vaut 0 (libellé « De location » ignoré, seul le nombre compte)
 Verifier Compteur Zero
     Wait Until Element Contains    ${COMPTEUR_RESULTATS}    0    timeout=10s
     ${texte}=    Get Text    ${COMPTEUR_RESULTATS}
     ${nombre}=    Evaluate    int(re.search(r'[0-9]+', $texte).group())    modules=re
     Should Be Equal As Integers    ${nombre}    0
+
+# ----- Scénario 5 : Critère non valide (oracles alignés sur la spécification) -----
 
 # La page de résultats ne doit pas s'afficher (l'URL ne doit pas contenir search-results)
 Verifier Page Resultats Non Affichee
@@ -122,3 +144,7 @@ Saisir Destination Libre
     [Arguments]    ${texte}
     Click Element    ${LISTE_DESTINATION}
     Input Text    ${CHAMP_RECHERCHE_DESTINATION}    ${texte}
+
+# =============================================================================
+# US-02 : Faire une demande de réservation
+# =============================================================================
